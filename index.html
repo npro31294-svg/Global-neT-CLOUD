@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="theme-color" content="#010a03"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>GBLNET-CLOUD 243</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#010a03;--bg2:#021005;--bg3:#031a08;--bg4:#042010;
+  --border:#0d4a1f;--border2:#062810;
+  --green:#00ff41;--green2:#00c832;--green3:#00841f;--green4:#004d12;
+  --gdim:#00ff4133;--gglow:#00ff4155;
+  --red:#ff3333;--amber:#ffaa00;--blue:#00aaff;--purple:#aa55ff;
+  --text:#e0ffe8;--text2:#a0ffb8;--muted:#4a8a5a;--muted2:#2a5a3a;--muted3:#1a3a25;
+  --f:'Exo 2',sans-serif;--f2:'Orbitron',sans-serif;--f3:'Share Tech Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);font-family:var(--f);overflow:hidden;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--green4);border-radius:4px;}
+input,select,button,textarea{font-family:var(--f);}
+button{cursor:pointer;border:none;background:none;}
+input:focus,select:focus{outline:none;border-color:var(--green2)!important;box-shadow:0 0 0 2px var(--gdim);}
+input::placeholder,textarea::placeholder{color:var(--muted2);}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{box-shadow:0 0 5px var(--green2)}50%{box-shadow:0 0 14px var(--green)}}
+@keyframes glitch{0%,100%{text-shadow:0 0 8px var(--green)}50%{text-shadow:2px 0 var(--green),0 0 20px var(--green)}}
+@keyframes toastIn{from{transform:translateX(110%)}to{transform:translateX(0)}}
+@keyframes scanline{0%{top:-2px}100%{top:100%}}
+@keyframes expire{0%,100%{opacity:1}50%{opacity:0.3}}
+
+#app{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;position:relative;overflow:hidden;}
+#app::before{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gdim),transparent);animation:scanline 5s linear infinite;z-index:999;pointer-events:none;}
+
+.screen{display:none;flex-direction:column;height:100%;}
+.screen.active{display:flex;animation:fadeIn 0.25s ease;}
+
+/* LOGIN */
+#ls{background:var(--bg);align-items:center;justify-content:center;padding:24px;position:relative;}
+.lcard{width:100%;max-width:340px;background:linear-gradient(145deg,var(--bg3),var(--bg));border:1px solid var(--green3);border-radius:4px;padding:26px;animation:slideUp 0.3s ease;box-shadow:0 0 30px #00ff4112;position:relative;}
+.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.lwrap{text-align:center;margin-bottom:24px;}
+.licon{display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:4px;background:var(--bg2);border:2px solid var(--green3);margin-bottom:11px;box-shadow:0 0 20px var(--gdim);}
+.ltitle{font-family:var(--f2);font-size:15px;font-weight:900;color:var(--green);letter-spacing:2px;animation:glitch 4s infinite;text-shadow:0 0 10px var(--green);}
+.lsub{color:var(--muted);font-size:9px;margin-top:3px;letter-spacing:2px;font-family:var(--f3);}
+.fl{color:var(--green3);font-size:10px;font-weight:600;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;display:block;font-family:var(--f3);}
+.fi{width:100%;padding:9px 11px;border-radius:3px;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-size:13px;font-family:var(--f3);margin-bottom:10px;transition:border-color 0.2s;}
+.pw{position:relative;margin-bottom:10px;}
+.pw .fi{margin-bottom:0;padding-right:38px;}
+.pe{position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--muted);}
+.bp{background:transparent;border:1px solid var(--green2);color:var(--green);border-radius:3px;padding:10px 18px;font-weight:700;font-size:13px;font-family:var(--f2);letter-spacing:2px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 0 12px var(--gdim);text-shadow:0 0 6px var(--green);}
+.bp:active{background:var(--gdim);}
+.bs{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:3px;padding:9px 18px;font-size:12px;font-family:var(--f);transition:all 0.2s;}
+.bd{background:transparent;border:1px solid #7f1d1d;color:var(--red);border-radius:3px;padding:7px 12px;font-size:11px;display:flex;align-items:center;gap:4px;transition:all 0.2s;}
+.ba{background:#ffaa0011;border:1px solid #664400;color:var(--amber);border-radius:3px;padding:7px 12px;font-size:11px;display:flex;align-items:center;gap:4px;}
+.err{color:var(--red);font-size:11px;background:#ff000011;border:1px solid #7f1d1d;border-radius:3px;padding:7px 11px;margin-bottom:9px;font-family:var(--f3);}
+.hint{text-align:center;color:var(--muted2);font-size:9px;margin-top:10px;font-family:var(--f3);}
+
+/* HEADER */
+#hdr{background:var(--bg2);border-bottom:1px solid var(--border2);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:relative;z-index:100;}
+#hdr::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green3),transparent);}
+.hlogo{display:flex;align-items:center;gap:9px;}
+.hico{width:32px;height:32px;border-radius:3px;background:var(--bg3);border:1px solid var(--green3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px var(--gdim);}
+.htit{font-family:var(--f2);font-size:11px;font-weight:900;color:var(--green);letter-spacing:2px;text-shadow:0 0 6px var(--green);}
+.hsub{color:var(--muted);font-size:8px;letter-spacing:1px;font-family:var(--f3);margin-top:1px;}
+.ibtn{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:5px 7px;color:var(--muted);display:flex;align-items:center;position:relative;}
+.ndot{position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--red);box-shadow:0 0 4px var(--red);}
+.ubtn{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:4px 9px;color:var(--text2);font-size:10px;display:flex;align-items:center;gap:6px;font-family:var(--f3);}
+.uav{width:22px;height:22px;border-radius:2px;background:var(--bg4);border:1px solid var(--green3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--green);font-family:var(--f2);}
+.tlab{color:var(--green3);font-size:8px;letter-spacing:2px;font-family:var(--f3);margin-top:5px;}
+
+/* NOTIF */
+#ndrop{display:none;position:absolute;top:58px;right:14px;background:var(--bg3);border:1px solid var(--green3);border-radius:4px;padding:12px;width:250px;z-index:500;box-shadow:0 12px 40px #00000099;animation:slideUp 0.15s ease;}
+#ndrop.open{display:block;}
+
+/* CONTENT */
+#content{flex:1;overflow-y:auto;overflow-x:hidden;}
+
+/* BOTTOM NAV */
+#bnav{background:var(--bg2);border-top:1px solid var(--border2);display:flex;justify-content:space-around;padding:7px 0 max(14px,env(safe-area-inset-bottom));flex-shrink:0;position:relative;}
+#bnav::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green3),transparent);}
+.nb{background:none;border:none;color:var(--muted2);font-size:9px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 7px;transition:all 0.2s;font-family:var(--f3);}
+.nb.active{color:var(--green);text-shadow:0 0 5px var(--green);}
+.nb.active svg{filter:drop-shadow(0 0 3px var(--green));}
+
+/* TABS */
+.tab{display:none;padding:12px 12px 20px;animation:fadeIn 0.2s ease;}
+.tab.active{display:block;}
+
+/* CARDS */
+.card{background:linear-gradient(145deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:4px;padding:13px;margin-bottom:10px;position:relative;}
+.card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:var(--green3);border-radius:4px 0 0 4px;}
+.csm{background:linear-gradient(145deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:4px;padding:11px;margin-bottom:9px;}
+
+/* BADGE */
+.badge{display:inline-block;border-radius:2px;padding:2px 7px;font-size:10px;font-weight:700;font-family:var(--f3);}
+.bg{background:#00ff4111;color:var(--green2);border:1px solid var(--green3);}
+.br{background:#ff333311;color:#ff6666;border:1px solid #7f1d1d;}
+.bb{background:#0088ff11;color:#55aaff;border:1px solid #005599;}
+.bgr{background:#ffffff08;color:#666;border:1px solid #333;}
+.bam{background:#ffaa0011;color:#ffcc44;border:1px solid #664400;}
+.bex{background:#ff000022;color:#ff4444;border:1px solid #ff0000;animation:expire 1s infinite;}
+.btest{background:#aa55ff22;color:#cc88ff;border:1px solid #663399;}
+
+/* STAT BAR */
+.sbw{background:var(--bg);border-radius:2px;height:5px;overflow:hidden;border:1px solid var(--border2);}
+.sbf{height:100%;border-radius:2px;transition:width 1s ease;}
+
+/* SEARCH */
+.swrap{display:flex;gap:7px;margin-bottom:9px;}
+.sbox{flex:1;display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:7px 11px;}
+.sbox input{background:none;border:none;outline:none;color:var(--text2);font-size:12px;flex:1;font-family:var(--f3);}
+
+/* CHIPS */
+.chips{display:flex;gap:5px;overflow-x:auto;padding-bottom:5px;margin-bottom:8px;scrollbar-width:none;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{white-space:nowrap;padding:3px 9px;border-radius:2px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:9px;font-weight:600;font-family:var(--f3);transition:all 0.15s;}
+.chip.active{border-color:var(--green2);background:var(--gdim);color:var(--green);}
+.ctxt{color:var(--muted);font-size:10px;margin-bottom:7px;font-family:var(--f3);}
+
+/* STAT GRID */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px;}
+.sc{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:4px;padding:11px;}
+.scval{color:var(--green);font-size:19px;font-weight:800;font-family:var(--f2);margin-bottom:1px;text-shadow:0 0 7px var(--gdim);}
+.sclb{color:var(--muted);font-size:9px;font-family:var(--f3);}
+.stit{color:var(--green);font-size:10px;font-weight:700;font-family:var(--f2);letter-spacing:2px;margin-bottom:9px;}
+
+/* MODAL */
+#mo{display:none;position:fixed;inset:0;background:#000000dd;z-index:400;align-items:center;justify-content:center;padding:14px;}
+#mo.open{display:flex;}
+.mbox{background:linear-gradient(145deg,var(--bg3),var(--bg2));border:1px solid var(--green3);border-radius:4px;padding:18px;width:100%;max-width:350px;animation:slideUp 0.2s ease;max-height:90vh;overflow-y:auto;box-shadow:0 0 30px var(--gdim);}
+.mbox::before{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);margin:-18px -18px 15px;}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mtit{color:var(--green);font-weight:700;font-size:12px;font-family:var(--f2);letter-spacing:2px;}
+.mcl{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:5px;color:var(--muted);display:flex;}
+.mft{display:flex;gap:7px;margin-top:12px;}
+.mft button{flex:1;padding:9px;border-radius:3px;font-size:12px;font-weight:600;}
+
+/* DETAIL */
+.drow{display:flex;justify-content:space-between;padding:6px 9px;background:var(--bg);border-radius:3px;margin-bottom:4px;border:1px solid var(--border2);}
+.dkey{color:var(--muted);font-size:10px;font-family:var(--f3);}
+.dval{color:var(--green);font-size:10px;font-weight:600;font-family:var(--f3);}
+
+/* TOAST */
+#toast{position:fixed;top:62px;right:11px;z-index:999;background:var(--bg3);border-radius:3px;padding:9px 13px;color:var(--text);font-size:11px;display:none;align-items:center;gap:7px;box-shadow:0 8px 28px #00000088;border-left:2px solid var(--green);animation:toastIn 0.22s ease;max-width:270px;font-family:var(--f3);}
+#toast.show{display:flex;}
+
+/* COPY BTN */
+.cbtn{background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:3px 7px;color:var(--muted);font-size:10px;font-family:var(--f3);display:flex;align-items:center;gap:4px;transition:all 0.15s;}
+.cbtn:active{border-color:var(--green3);color:var(--green);}
+
+/* TIMER SELECTOR */
+.tsel{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px;}
+.topt{padding:7px 4px;border-radius:3px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-family:var(--f3);text-align:center;transition:all 0.15s;cursor:pointer;}
+.topt.active{border-color:var(--green2);background:var(--gdim);color:var(--green);}
+
+/* COUNTDOWN */
+.countdown{font-family:var(--f2);font-size:18px;color:var(--amber);text-shadow:0 0 8px var(--amber);letter-spacing:2px;}
+.countdown.urgent{color:var(--red);text-shadow:0 0 8px var(--red);animation:expire 0.5s infinite;}
+
+.spinner{width:15px;height:15px;border:2px solid var(--green3);border-top-color:var(--green);border-radius:50%;animation:spin 0.7s linear infinite;}
+
+/* RESELLER BADGE */
+.rbadge{display:inline-flex;align-items:center;gap:4px;background:var(--bg2);border:1px solid var(--green3);border-radius:2px;padding:2px 7px;font-size:9px;font-family:var(--f3);color:var(--green3);}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="toast"><svg id="tico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"></svg><span id="tmsg"></span></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="ls" class="screen active">
+<div class="lcard">
+  <div class="lwrap">
+    <div class="licon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00ff41" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4" stroke-width="2"/></svg></div>
+    <div class="ltitle">GBLNET-CLOUD 243</div>
+    <div class="lsub">// VPN MANAGEMENT SYSTEM //</div>
+  </div>
+  <label class="fl">► IDENTIFIANT</label>
+  <input class="fi" id="lu" placeholder="admin" autocomplete="off"/>
+  <label class="fl">► MOT DE PASSE</label>
+  <div class="pw">
+    <input class="fi" id="lp" type="password" placeholder="••••••••"/>
+    <button class="pe" onclick="togglePw()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+  </div>
+  <div id="lerr" class="err" style="display:none"></div>
+  <button class="bp" id="lbtn" style="width:100%;margin-top:4px" onclick="doLogin()">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>CONNEXION
+  </button>
+  <div class="hint">// admin / admin //</div>
+</div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div id="ms" class="screen">
+<div id="hdr">
+  <div class="hlogo">
+    <div class="hico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff41" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+    <div><div class="htit" id="htit">GBLNET-CLOUD 243</div><div class="hsub" id="htime">00:00:00</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:7px">
+    <button class="ibtn" onclick="toggleNotif()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="ndot"></span>
+    </button>
+    <button class="ubtn" onclick="doLogout()">
+      <div class="uav" id="uav">A</div>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#4a8a5a" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+  <div id="ndrop">
+    <div style="color:var(--green);font-size:10px;font-weight:700;margin-bottom:9px;font-family:var(--f2)">// ALERTES //</div>
+    <div id="nlist"></div>
+  </div>
+  <div class="tlab" id="tlab">// DASHBOARD //</div>
+</div>
+
+<div id="content">
+
+<!-- DASHBOARD -->
+<div id="tab-dashboard" class="tab active">
+  <div class="sgrid">
+    <div class="sc"><div style="font-size:16px;margin-bottom:4px">👥</div><div class="scval" id="dac">0</div><div class="sclb">CLIENTS</div><div style="font-size:9px;font-family:var(--f3);color:var(--green3);margin-top:1px" id="don">0 en ligne</div></div>
+    <div class="sc"><div style="font-size:16px;margin-bottom:4px">📶</div><div class="scval" id="dlv" style="color:var(--green2)">0</div><div class="sclb">CONNECTÉS</div></div>
+    <div class="sc"><div style="font-size:16px;margin-bottom:4px">🏪</div><div class="scval" id="drs" style="color:var(--amber)">0</div><div class="sclb">REVENDEURS</div></div>
+    <div class="sc"><div style="font-size:16px;margin-bottom:4px">⏱️</div><div class="scval" id="dts" style="color:var(--purple);font-size:14px">0</div><div class="sclb">TESTS ACTIFS</div></div>
+  </div>
+  <div class="csm" style="margin-bottom:9px">
+    <div class="stit">// SERVEUR //</div>
+    <div style="display:flex;align-items:center;gap:6px;padding:5px 9px;background:var(--bg);border:1px solid var(--border2);border-radius:3px;margin-bottom:8px">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:blink 2s infinite"></span>
+      <span style="color:var(--green);font-size:10px;font-family:var(--f3)">EN LIGNE</span>
+      <span style="color:var(--muted);font-size:9px;font-family:var(--f3);margin-left:auto" id="sipd">IP: —</span>
+    </div>
+    <div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:10px;font-family:var(--f3)">CPU</span><span id="cpuv" style="color:var(--green2);font-size:10px;font-family:var(--f3)">0%</span></div><div class="sbw"><div class="sbf" id="cpub" style="width:0%;background:var(--green2)"></div></div></div>
+    <div><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:10px;font-family:var(--f3)">RAM</span><span id="ramv" style="color:var(--amber);font-size:10px;font-family:var(--f3)">0%</span></div><div class="sbw"><div class="sbf" id="ramb" style="width:0%;background:var(--amber)"></div></div></div>
+    <div style="display:flex;justify-content:space-around;margin-top:9px;padding-top:9px;border-top:1px solid var(--border2)">
+      <div style="text-align:center"><div style="color:var(--muted);font-size:8px;font-family:var(--f3);margin-bottom:2px">SSH</div><div style="color:var(--green);font-size:11px;font-family:var(--f3)" id="dssh">:22</div></div>
+      <div style="text-align:center"><div style="color:var(--muted);font-size:8px;font-family:var(--f3);margin-bottom:2px">V2RAY</div><div style="color:var(--green);font-size:11px;font-family:var(--f3)">:443</div></div>
+      <div style="text-align:center"><div style="color:var(--muted);font-size:8px;font-family:var(--f3);margin-bottom:2px">UDP</div><div style="color:var(--green);font-size:11px;font-family:var(--f3)">:36712</div></div>
+    </div>
+  </div>
+  <div class="csm"><div class="stit">// ACTIVITÉ RÉCENTE //</div><div id="rlist"><div style="color:var(--muted2);font-size:10px;font-family:var(--f3);text-align:center;padding:8px">Aucun client</div></div></div>
+</div>
+
+<!-- CLIENTS -->
+<div id="tab-users" class="tab">
+  <div class="swrap">
+    <div class="sbox"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2a5a3a" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="usearch" placeholder="rechercher client..." oninput="renderClients()"/></div>
+    <button class="bp" style="border-radius:3px;padding:0 11px;gap:5px;font-size:10px" onclick="OM('ac')">+ NOUVEAU</button>
+  </div>
+  <div class="chips">
+    <button class="chip active" onclick="setF('Tous',this)">TOUS</button>
+    <button class="chip" onclick="setF('Online',this)">ONLINE</button>
+    <button class="chip" onclick="setF('Offline',this)">OFFLINE</button>
+    <button class="chip" onclick="setF('Test',this)">TESTS</button>
+    <button class="chip" onclick="setF('Expire',this)">EXPIRÉS</button>
+    <button class="chip" onclick="setF('SSH',this)">SSH</button>
+    <button class="chip" onclick="setF('V2Ray',this)">V2RAY</button>
+  </div>
+  <div class="ctxt" id="ucount">0 client(s)</div>
+  <div id="clist"></div>
+</div>
+
+<!-- REVENDEURS -->
+<div id="tab-resellers" class="tab">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+    <div class="ctxt" id="rcount">0 revendeur(s)</div>
+    <button class="bp" style="padding:6px 11px;gap:5px;font-size:10px" onclick="OM('ar')">+ NOUVEAU</button>
+  </div>
+  <div id="rslist"></div>
+</div>
+
+<!-- VPS -->
+<div id="tab-vps" class="tab">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+    <div class="ctxt" id="vcount">0 VPS</div>
+    <button class="bp" style="padding:6px 11px;gap:5px;font-size:10px" onclick="OM('av')">+ AJOUTER</button>
+  </div>
+  <div id="vlist"></div>
+</div>
+
+<!-- CONFIG -->
+<div id="tab-settings" class="tab">
+  <div class="csm" style="margin-bottom:9px;border-color:var(--green3)">
+    <div class="stit">// SERVEUR PRINCIPAL //</div>
+    <label class="fl">IP DU SERVEUR</label>
+    <input class="fi" id="sip" placeholder="62.113.200.179" oninput="updIP()"/>
+    <label class="fl">PORT SSH</label>
+    <input class="fi" id="sport" value="22" type="number"/>
+    <label class="fl">UDP PORT</label>
+    <input class="fi" id="sudp" value="36712" type="number"/>
+    <button class="bp" style="width:100%;font-size:11px;padding:8px" onclick="saveSettings()">APPLIQUER</button>
+  </div>
+  <div class="csm" style="margin-bottom:9px">
+    <div class="stit">// COMPTE ADMIN //</div>
+    <label class="fl">MOT DE PASSE ADMIN</label>
+    <input class="fi" type="password" id="spw" placeholder="nouveau mot de passe"/>
+    <button class="bp" style="width:100%;font-size:11px;padding:8px" onclick="showToast('Mot de passe mis à jour','success')">SAUVEGARDER</button>
+  </div>
+  <div class="csm">
+    <div class="stit">// À PROPOS //</div>
+    <div class="drow"><span class="dkey">PANEL</span><span class="dval">GBLNET-CLOUD 243</span></div>
+    <div class="drow"><span class="dkey">VERSION</span><span class="dval">v2.0.0</span></div>
+    <div class="drow"><span class="dkey">SCRIPT</span><span class="dval">RUFU / SSH</span></div>
+    <div class="drow"><span class="dkey">PROTOCOLES</span><span class="dval">SSH · V2Ray · UDP</span></div>
+  </div>
+  <div style="margin-top:10px">
+    <button onclick="clearAll()" class="bd" style="width:100%;justify-content:center;padding:9px">⚠️ EFFACER TOUTES LES DONNÉES</button>
+  </div>
+  <div style="margin-top:10px" class="csm">
+    <div class="stit">// SYNC ENTRE APPAREILS //</div>
+    <div style="color:var(--muted);font-size:10px;font-family:var(--f3);margin-bottom:10px">Pour utiliser le panel sur plusieurs appareils, exportez les données et importez-les sur l'autre appareil.</div>
+    <button onclick="exportData()" class="bp" style="width:100%;font-size:11px;padding:9px;margin-bottom:8px">📤 EXPORTER LES DONNÉES</button>
+    <label class="fl">COLLER LE CODE EXPORTÉ</label>
+    <textarea class="fi" id="import-ta" style="height:70px;resize:none" placeholder="Collez le code ici..."></textarea>
+    <button onclick="importData(document.getElementById('import-ta').value)" class="bp" style="width:100%;font-size:11px;padding:9px">📥 IMPORTER LES DONNÉES</button>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- BOTTOM NAV -->
+<div id="bnav">
+  <button class="nb active" id="nav-dashboard" onclick="ST('dashboard')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>DASH
+  </button>
+  <button class="nb" id="nav-users" onclick="ST('users')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>CLIENTS
+  </button>
+  <button class="nb" id="nav-resellers" onclick="ST('resellers')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><line x1="12" y1="12" x2="12" y2="22"/><line x1="8" y1="16" x2="16" y2="16"/></svg>RESELL
+  </button>
+  <button class="nb" id="nav-vps" onclick="ST('vps')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="5" rx="1"/><circle cx="18" cy="5.5" r="1" fill="currentColor"/><circle cx="18" cy="12.5" r="1" fill="currentColor"/></svg>VPS
+  </button>
+  <button class="nb" id="nav-settings" onclick="ST('settings')">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>CONFIG
+  </button>
+</div>
+</div><!-- /ms -->
+
+<!-- MODAL -->
+<div id="mo" onclick="CM()">
+  <div class="mbox" onclick="event.stopPropagation()">
+    <div class="mhdr"><span class="mtit" id="mtit">MODAL</span><button class="mcl" onclick="CM()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div id="mbody"></div>
+  </div>
+</div>
+</div><!-- /app -->
+
+<script>
+// ══ DATA ══════════════════════════════════════════════════════════════════════
+let clients=[],resellers=[],vps=[],CF="Tous",CMT="",CU=null;
+let srvIP="",srvPort="22",srvUDP="36712";
+
+// ══ BASE DE DONNÉES VPS RÉELLE — 62.113.200.179:3001 ════════════════════════
+const API_URL="http://62.113.200.179:3001/api/data";
+const GBL_KEY="gblnet_cloud_243_v3";
+
+async function save(){
+  const data={clients,resellers,vps,settings:{srvIP,srvPort,srvUDP},ts:Date.now()};
+  // Backup localStorage immédiat
+  try{localStorage.setItem(GBL_KEY,JSON.stringify(data));}catch(e){}
+  // Sauvegarde sur le VPS
+  try{
+    await fetch(API_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    });
+  }catch(e){console.log("VPS offline, données sauvegardées localement");}
+}
+
+function load(){
+  return new Promise(async(resolve)=>{
+    let data=null;
+    // VPS en priorité (données partagées entre tous les appareils)
+    try{
+      const r=await fetch(API_URL,{signal:AbortSignal.timeout(5000)});
+      if(r.ok){const d=await r.json();if(d)data=d;}
+    }catch(e){}
+    // Sinon localStorage
+    if(!data){try{data=JSON.parse(localStorage.getItem(GBL_KEY)||"null");}catch(e){}}
+    if(data){
+      clients=Array.isArray(data.clients)?data.clients:[];
+      resellers=Array.isArray(data.resellers)?data.resellers:[];
+      vps=Array.isArray(data.vps)?data.vps:[];
+      const s=data.settings||{};
+      srvIP=s.srvIP||"";srvPort=s.srvPort||"22";srvUDP=s.srvUDP||"36712";
+      if(srvIP){
+        document.getElementById("sipd").textContent="IP: "+srvIP;
+        const si=document.getElementById("sip");if(si)si.value=srvIP;
+        const sp=document.getElementById("sport");if(sp)sp.value=srvPort;
+        const su=document.getElementById("sudp");if(su)su.value=srvUDP;
+        document.getElementById("dssh").textContent=":"+srvPort;
+      }
+    }
+    resolve(data);
+  });
+}
+
+function clearAll(){
+  if(!confirm("Effacer toutes les données ?"))return;
+  clients=[];resellers=[];vps=[];
+  save();
+  renderClients();renderResellers();renderVPS();updateDash();
+  showToast("Données effacées","error");
+}
+
+
+// ══ HELPERS ═══════════════════════════════════════════════════════════════════
+const fmt=s=>{const h=String(Math.floor(s/3600)).padStart(2,"0"),m=String(Math.floor((s%3600)/60)).padStart(2,"0"),sc=String(s%60).padStart(2,"0");return`${h}:${m}:${sc}`;};
+const fd=d=>new Date(d).toLocaleDateString("fr-FR");
+const fmb=mb=>mb>=1024?`${(mb/1024).toFixed(2)} GB`:`${mb} MB`;
+const esc=s=>String(s).replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const pct=(u,l)=>l>0?Math.min(100,Math.round(u/l*100)):0;
+const pc=p=>p>=90?"var(--red)":p>=70?"var(--amber)":"var(--green2)";
+
+// Formatage durée test
+const fmtDur=sec=>{
+  if(sec<=0)return"EXPIRÉ";
+  if(sec<60)return`${sec}s`;
+  if(sec<3600)return`${Math.floor(sec/60)}m ${sec%60}s`;
+  return`${Math.floor(sec/3600)}h ${Math.floor((sec%3600)/60)}m`;
+};
+
+// Vérifie si un client est expiré
+const isExpired=c=>{
+  if(c.testDuration>0&&c.testRemaining<=0)return true;
+  if(c.expires&&new Date(c.expires)<new Date())return true;
+  return false;
+};
+
+// ══ TOAST ═════════════════════════════════════════════════════════════════════
+let tt;
+function showToast(msg,type="info"){
+  const C={success:"var(--green2)",error:"var(--red)",info:"var(--blue)",warning:"var(--amber)"};
+  const I={success:'<polyline points="20 6 9 17 4 12"/>',error:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',info:'<circle cx="12" cy="12" r="10"/>',warning:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>'};
+  const el=document.getElementById("toast");
+  el.style.borderLeftColor=C[type]||C.info;
+  document.getElementById("tico").innerHTML=I[type]||I.info;
+  document.getElementById("tico").style.stroke=C[type]||C.info;
+  document.getElementById("tmsg").textContent=msg;
+  el.classList.add("show");clearTimeout(tt);
+  tt=setTimeout(()=>el.classList.remove("show"),3000);
+}
+
+// ══ COPY ══════════════════════════════════════════════════════════════════════
+function copyTxt(txt){
+  // Méthode 1 : clipboard API
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(()=>showToast("✅ Copié !","success")).catch(()=>fallbackCopy(txt));
+  } else {
+    fallbackCopy(txt);
+  }
+}
+
+function fallbackCopy(txt){
+  // Méthode 2 : textarea
+  const ta=document.createElement("textarea");
+  ta.value=txt;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0;";
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{
+    const ok=document.execCommand("copy");
+    document.body.removeChild(ta);
+    if(ok){showToast("✅ Copié !","success");}else{showCopyModal(txt);}
+  }catch(e){document.body.removeChild(ta);showCopyModal(txt);}
+}
+
+function showCopyModal(txt){
+  // Méthode 3 : modal manuel
+  CMT="copy";
+  document.getElementById("mtit").textContent="// COPIER INFOS //";
+  document.getElementById("mbody").innerHTML=`
+    <div style="color:var(--muted);font-size:10px;font-family:var(--f3);margin-bottom:7px">Appuyez longuement → Sélectionner tout → Copier :</div>
+    <textarea id="cta" readonly style="width:100%;height:130px;background:var(--bg);border:1px solid var(--green3);border-radius:3px;color:var(--green);font-family:var(--f3);font-size:12px;padding:9px;resize:none;line-height:1.6">${txt}</textarea>
+    <button class="bp" style="width:100%;margin-top:9px;font-size:11px" onclick="selAll()">TOUT SÉLECTIONNER</button>
+    <button class="bs" style="width:100%;margin-top:6px;font-size:11px" onclick="CM()">FERMER</button>`;
+  document.getElementById("mo").classList.add("open");
+  setTimeout(()=>{const t=document.getElementById("cta");if(t){t.focus();t.select();}},150);
+}
+
+function selAll(){
+  const t=document.getElementById("cta");
+  if(t){t.focus();t.select();document.execCommand("copy");showToast("✅ Copié !","success");}
+}
+
+function copyClient(id){
+  const c=clients.find(x=>x.id===id);if(!c)return;
+  const ip=srvIP||"VOTRE-IP";
+  const port=srvPort||"22";
+  let txt=`━━━━━━━━━━━━━━━━━━━━\nGBLNET-CLOUD 243\n━━━━━━━━━━━━━━━━━━━━\n`;
+  txt+=`🌐 IP: ${ip}\n`;
+  txt+=`👤 User: ${c.username}\n`;
+  txt+=`🔑 Pass: ${c.password}\n`;
+  txt+=`📡 Méthode: ${c.method}\n`;
+  txt+=`🔌 Port SSH: ${port}\n`;
+  if(c.testDuration>0){
+    txt+=`⏱️ Durée test: ${fmtDur(c.testRemaining||c.testDuration)}\n`;
+  } else {
+    txt+=`📅 Expire: ${fd(c.expires)}\n`;
+  }
+  txt+=`📊 Limite: ${c.limitVal>0?c.limitVal+" "+c.limitUnit:"Illimitée"}\n`;
+  txt+=`━━━━━━━━━━━━━━━━━━━━`;
+  copyTxt(txt);
+}
+
+// ══ LOGIN ═════════════════════════════════════════════════════════════════════
+function togglePw(){const f=document.getElementById("lp");f.type=f.type==="password"?"text":"password";}
+
+function doLogin(){
+  const u=document.getElementById("lu").value.trim();
+  const p=document.getElementById("lp").value;
+  const err=document.getElementById("lerr"),btn=document.getElementById("lbtn");
+  if(!u||!p){err.textContent="// CHAMPS REQUIS //";err.style.display="block";return;}
+  err.style.display="none";
+  btn.innerHTML='<div class="spinner"></div>';btn.disabled=true;
+
+  // Charge les données puis vérifie login
+  load().then(()=>{
+    // Admin
+    if(u==="admin"&&p==="admin"){
+      CU={role:"admin"};
+      document.getElementById("uav").textContent="A";
+      document.getElementById("htit").textContent="GBLNET-CLOUD 243";
+      // Affiche tous les onglets admin
+      document.getElementById("nav-resellers").style.display="";
+      document.getElementById("nav-vps").style.display="";
+      document.getElementById("nav-settings").style.display="";
+      showMS();initApp();
+      return;
+    }
+    // Revendeur
+    const r=resellers.find(x=>
+      x.username.toLowerCase()===u.toLowerCase()&&
+      x.password===p&&
+      x.status==="Active"
+    );
+    if(r){
+      CU={role:"reseller",rid:r.id,rname:r.username};
+      document.getElementById("uav").textContent=u[0].toUpperCase();
+      document.getElementById("htit").textContent=r.username.toUpperCase();
+      // Cache onglets non accessibles au revendeur
+      document.getElementById("nav-resellers").style.display="none";
+      document.getElementById("nav-vps").style.display="none";
+      document.getElementById("nav-settings").style.display="none";
+      // Garde Dashboard et Clients
+      document.getElementById("nav-dashboard").style.display="";
+      document.getElementById("nav-users").style.display="";
+      showMS();initResellerApp(r);
+      return;
+    }
+    // Accès refusé
+    err.textContent="// ACCÈS REFUSÉ — Identifiants incorrects //";
+    err.style.display="block";
+    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>CONNEXION';
+    btn.disabled=false;
+  });
+}
+
+function showMS(){
+  document.getElementById("ls").classList.remove("active");
+  document.getElementById("ms").classList.add("active");
+}
+
+function doLogout(){
+  CU=null;loopStarted=false;
+  // Réaffiche tous les onglets
+  ["nav-dashboard","nav-users","nav-resellers","nav-vps","nav-settings"].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display="";
+  });
+  document.getElementById("htit").textContent="GBLNET-CLOUD 243";
+  document.getElementById("ms").classList.remove("active");
+  document.getElementById("ls").classList.add("active");
+  ["lu","lp"].forEach(i=>document.getElementById(i).value="");
+  document.getElementById("lerr").style.display="none";
+  const b=document.getElementById("lbtn");
+  b.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>CONNEXION';
+  b.disabled=false;
+}
+
+document.getElementById("lp").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+document.getElementById("lu").addEventListener("keydown",e=>{if(e.key==="Enter")doLogin();});
+
+// ══ NOTIF ═════════════════════════════════════════════════════════════════════
+function toggleNotif(){document.getElementById("ndrop").classList.toggle("open");}
+document.addEventListener("click",e=>{
+  const n=document.getElementById("ndrop");
+  if(n.classList.contains("open")&&!n.contains(e.target)&&!e.target.closest(".ibtn"))n.classList.remove("open");
+});
+
+function updateNotifs(){
+  const expired=clients.filter(c=>isExpired(c));
+  const tests=clients.filter(c=>c.testDuration>0&&c.testRemaining>0&&c.testRemaining<300);
+  const items=[
+    ...expired.slice(0,2).map(c=>`<div class="nitem"><div style="width:6px;height:6px;border-radius:50%;background:var(--red);margin-top:3px;flex-shrink:0"></div><div><div style="color:var(--text2);font-size:10px;font-family:var(--f3)">${esc(c.username)} expiré</div></div></div>`),
+    ...tests.slice(0,2).map(c=>`<div class="nitem"><div style="width:6px;height:6px;border-radius:50%;background:var(--amber);margin-top:3px;flex-shrink:0"></div><div><div style="color:var(--text2);font-size:10px;font-family:var(--f3)">${esc(c.username)}: ${fmtDur(c.testRemaining)} restant</div></div></div>`),
+  ];
+  document.getElementById("nlist").innerHTML=items.join("")||`<div style="color:var(--muted2);font-size:10px;font-family:var(--f3)">Aucune alerte</div>`;
+}
+
+// ══ TABS ══════════════════════════════════════════════════════════════════════
+const TL={dashboard:"// DASHBOARD //",users:"// CLIENTS SSH //",resellers:"// REVENDEURS //",vps:"// SERVEURS VPS //",settings:"// CONFIGURATION //"};
+function ST(t){
+  document.querySelectorAll(".tab").forEach(e=>e.classList.remove("active"));
+  document.querySelectorAll(".nb").forEach(e=>e.classList.remove("active"));
+  document.getElementById("tab-"+t).classList.add("active");
+  document.getElementById("nav-"+t).classList.add("active");
+  document.getElementById("tlab").textContent=TL[t];
+  document.getElementById("ndrop").classList.remove("open");
+  if(t==="users")renderClients();
+  if(t==="resellers")renderResellers();
+  if(t==="vps")renderVPS();
+  if(t==="dashboard")updateDash();
+}
+
+// ══ MODAL ═════════════════════════════════════════════════════════════════════
+function CM(){document.getElementById("mo").classList.remove("open");}
+
+// Options de durée test
+const TEST_OPTS=[
+  {l:"5 min",s:300},{l:"10 min",s:600},{l:"15 min",s:900},
+  {l:"30 min",s:1800},{l:"45 min",s:2700},{l:"1h",s:3600},
+  {l:"2h",s:7200},{l:"3h",s:10800},{l:"6h",s:21600},
+  {l:"12h",s:43200},{l:"24h",s:86400},{l:"Perma",s:0}
+];
+
+let selTestDur=0;// 0=permanent
+
+function renderTestOpts(){
+  return`<label class="fl">► DURÉE (0=permanent)</label>
+  <div class="tsel">${TEST_OPTS.map(o=>`<button class="topt${selTestDur===o.s?' active':''}" onclick="setTestDur(${o.s},this)">${o.l}</button>`).join("")}</div>`;
+}
+
+function setTestDur(s,btn){
+  selTestDur=s;
+  document.querySelectorAll(".topt").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function OM(type,data={}){
+  CMT=type;selTestDur=data.testDuration||0;
+  const T=document.getElementById("mtit"),B=document.getElementById("mbody");
+  const IL=(lb,id,t="text",v="",ph="")=>`<label class="fl">► ${lb}</label><input class="fi" id="${id}" type="${t}" value="${esc(String(v))}" placeholder="${ph}"/>`;
+  const SL=(lb,id,opts,v="")=>`<label class="fl">► ${lb}</label><select class="fi" id="${id}">${opts.map(o=>`<option ${o===v?"selected":""}>${o}</option>`).join("")}</select>`;
+  const LH=(lv=0,lu="MB")=>`<label class="fl">► LIMITE TRAFIC <span style="color:var(--muted2)">(0=illimité)</span></label><div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px"><input class="fi" id="mlv" type="number" value="${lv}" style="margin:0"/><select class="fi" id="mlu" style="margin:0"><option ${lu==="MB"?"selected":""}>MB</option><option ${lu==="GB"?"selected":""}>GB</option></select></div>`;
+  const FT=`<div class="mft"><button class="bs" onclick="CM()">ANNULER</button><button class="bp" onclick="SM()">CONFIRMER</button></div>`;
+
+  if(type==="ac"){
+    T.textContent="// NOUVEAU CLIENT //";
+    B.innerHTML=IL("NOM D'UTILISATEUR","mu","text","","client01")+IL("MOT DE PASSE","mpw","text","","pass123")+SL("PROTOCOLE","mmt",["SSH","V2Ray","SSH+V2Ray"])+IL("MAX CONNEXIONS","mmc","number","1")+renderTestOpts()+`<div id="permSect">`+IL("DATE EXPIRATION","mex","date",new Date(Date.now()+30*864e5).toISOString().split("T")[0])+`</div>`+LH()+FT;
+    // Gère l'affichage date selon test
+    updateTestUI();
+  } else if(type==="ec"){
+    T.textContent="// MODIFIER CLIENT //";
+    B.innerHTML=`<input type="hidden" id="mid" value="${data.id}"/>`+IL("NOM D'UTILISATEUR","mu","text",data.username)+IL("MOT DE PASSE","mpw","text",data.password)+SL("STATUT","mst",["Active","Inactive"],data.status)+SL("PROTOCOLE","mmt",["SSH","V2Ray","SSH+V2Ray"],data.method)+IL("MAX CONNEXIONS","mmc","number",data.maxConn)+LH(data.limitVal||0,data.limitUnit||"MB")+IL("DATE EXPIRATION","mex","date",data.expires)+FT;
+  } else if(type==="vc"){
+    T.textContent="// DÉTAILS CLIENT //";
+    const lmb=data.limitVal>0?(data.limitUnit==="GB"?data.limitVal*1024:data.limitVal):0;
+    const up=lmb>0?pct(data.usedMB,lmb):0;
+    const isTest=data.testDuration>0;
+    const exp=isExpired(data);
+    B.innerHTML=[
+      ["USERNAME",data.username],["MOT DE PASSE",data.password],
+      ["STATUT",exp?"⛔ EXPIRÉ":data.status],
+      ["PROTOCOLE",data.method],
+      isTest?["DURÉE TEST",fmtDur(data.testRemaining||0)]:["EXPIRE LE",fd(data.expires)],
+      ["CONNEXIONS",`${data.connections}/${data.maxConn}`],
+      ["UPTIME",fmt(data.uptime)],
+      ["↑ UPLOAD",fmb(data.trafficUp)],["↓ DOWNLOAD",fmb(data.trafficDown)],
+      ["LIMITE",data.limitVal>0?`${fmb(data.usedMB)} / ${data.limitVal}${data.limitUnit}`:"∞ Illimitée"]
+    ].map(([k,v])=>`<div class="drow"><span class="dkey">${k}</span><span class="dval">${esc(String(v))}</span></div>`).join("")+
+    (lmb>0?`<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:10px;font-family:var(--f3)">UTILISATION</span><span style="color:${pc(up)};font-size:10px;font-family:var(--f3)">${up}%</span></div><div class="sbw"><div class="sbf" style="width:${up}%;background:${pc(up)}"></div></div></div>`:"")+
+    `<div style="display:flex;gap:7px;margin-top:11px">
+      <button onclick="copyClient(${data.id});CM()" class="cbtn" style="flex:1;justify-content:center;padding:8px">📋 COPIER INFOS</button>
+      <button class="bp" style="flex:1;font-size:11px" onclick="CM()">FERMER</button>
+    </div>`;
+  } else if(type==="ar"){
+    T.textContent="// NOUVEAU REVENDEUR //";
+    B.innerHTML=IL("NOM D'UTILISATEUR","mu","text","","reseller01")+IL("MOT DE PASSE PANEL","mpw","text","","pass123")+IL("MAX CLIENTS","mmc","number","10")+IL("SOLDE INITIAL ($)","mbal","number","0")+LH()+IL("DATE EXPIRATION","mex","date",new Date(Date.now()+30*864e5).toISOString().split("T")[0])+FT;
+  } else if(type==="er"){
+    T.textContent="// MODIFIER REVENDEUR //";
+    B.innerHTML=`<input type="hidden" id="mid" value="${data.id}"/>`+IL("NOM D'UTILISATEUR","mu","text",data.username)+IL("MOT DE PASSE PANEL","mpw","text",data.password)+SL("STATUT","mst",["Active","Inactive"],data.status)+IL("MAX CLIENTS","mmc","number",data.maxClients)+IL("SOLDE ($)","mbal","number",data.balance)+LH(data.limitVal||0,data.limitUnit||"MB")+IL("DATE EXPIRATION","mex","date",data.expires)+FT;
+  } else if(type==="av"){
+    T.textContent="// AJOUTER VPS //";
+    B.innerHTML=IL("NOM DU SERVEUR","mvn","text","","VPS-FR-01")+IL("ADRESSE IP","mvip","text","","")+IL("PORT SSH","mvp","number","22")+IL("UTILISATEUR SSH","mvus","text","","root")+IL("MOT DE PASSE SSH","mvpw","password","","")+SL("PAYS","mvc",["France","USA","Allemagne","Pays-Bas","Singapour","Brésil","Canada","Royaume-Uni","Japon","Autre"])+`<label class="fl">► PROTOCOLES</label><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px">${["SSH","V2Ray","Xray","UDP"].map(p=>`<label style="display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:6px 9px;cursor:pointer"><input type="checkbox" value="${p}" ${p==="SSH"?"checked":""} style="accent-color:var(--green);width:12px;height:12px"/><span style="color:var(--text2);font-size:11px;font-family:var(--f3)">${p}</span></label>`).join("")}</div>`+IL("RAM (GB)","mvram","number","2")+IL("BANDE PASSANTE (Mbps)","mvbw","number","100")+FT;
+  }
+  document.getElementById("mo").classList.add("open");
+  setTimeout(()=>{const f=document.querySelector(".mbox input:not([type=checkbox]):not([type=hidden])");if(f)f.focus();},80);
+}
+
+function updateTestUI(){
+  const ps=document.getElementById("permSect");
+  if(ps)ps.style.display=selTestDur>0?"none":"block";
+}
+
+// ══ SUBMIT MODAL ══════════════════════════════════════════════════════════════
+function SM(){
+  const gv=id=>(document.getElementById(id)||{value:""}).value;
+
+  if(CMT==="ac"){
+    const u=gv("mu").trim();if(!u){showToast("Nom requis","error");return;}
+    const td=selTestDur;// durée test en secondes
+    const rid=CU?.role==="reseller"?CU.rid:null;
+    clients.push({
+      id:Date.now(),username:u,password:gv("mpw")||"pass123",
+      online:false,status:"Active",method:gv("mmt")||"SSH",
+      expires:td>0?new Date(Date.now()+td*1000).toISOString().split("T")[0]:gv("mex"),
+      connections:0,maxConn:parseInt(gv("mmc"))||1,
+      uptime:0,trafficUp:0,trafficDown:0,usedMB:0,
+      limitVal:parseInt(gv("mlv"))||0,limitUnit:gv("mlu")||"MB",
+      testDuration:td,testRemaining:td,// 0=permanent
+      resellerId:rid,createdAt:Date.now()
+    });
+    CM();showToast("Client créé !","success");save();renderClients();updateDash();
+
+  } else if(CMT==="ec"){
+    const id=parseInt(gv("mid")),i=clients.findIndex(c=>c.id===id);
+    if(i!==-1)clients[i]={...clients[i],
+      username:gv("mu").trim(),password:gv("mpw"),
+      status:gv("mst"),method:gv("mmt"),
+      maxConn:parseInt(gv("mmc"))||1,
+      expires:gv("mex"),
+      limitVal:parseInt(gv("mlv"))||0,limitUnit:gv("mlu")||"MB"};
+    CM();showToast("Client mis à jour","success");save();renderClients();
+
+  } else if(CMT==="ar"){
+    const u=gv("mu").trim();if(!u){showToast("Nom requis","error");return;}
+    // Vérifie si le nom existe déjà
+    if(resellers.find(r=>r.username.toLowerCase()===u.toLowerCase())){
+      showToast("Ce nom existe déjà !","error");return;
+    }
+    resellers.push({
+      id:Date.now(),username:u,password:gv("mpw")||"pass123",
+      clients:0,maxClients:parseInt(gv("mmc"))||10,
+      balance:parseFloat(gv("mbal"))||0,
+      limitVal:parseInt(gv("mlv"))||0,limitUnit:gv("mlu")||"MB",
+      expires:gv("mex"),status:"Active"
+    });
+    CM();showToast("Revendeur créé ! Il peut maintenant se connecter.","success");save();renderResellers();updateDash();
+
+  } else if(CMT==="er"){
+    const id=parseInt(gv("mid")),i=resellers.findIndex(r=>r.id===id);
+    if(i!==-1)resellers[i]={...resellers[i],
+      username:gv("mu").trim(),password:gv("mpw"),
+      status:gv("mst"),maxClients:parseInt(gv("mmc"))||10,
+      balance:parseFloat(gv("mbal"))||0,
+      limitVal:parseInt(gv("mlv"))||0,limitUnit:gv("mlu")||"MB",
+      expires:gv("mex")};
+    CM();showToast("Revendeur mis à jour","success");save();renderResellers();
+
+  } else if(CMT==="av"){
+    const name=gv("mvn").trim(),ip=gv("mvip").trim();
+    if(!name||!ip){showToast("Nom et IP requis","error");return;}
+    const protos=[...document.querySelectorAll(".mbox input[type=checkbox]:checked")].map(c=>c.value);
+    vps.push({
+      id:Date.now(),name,ip,port:parseInt(gv("mvp"))||22,
+      sshUser:gv("mvus")||"root",sshPass:gv("mvpw"),
+      country:gv("mvc"),online:false,
+      protocols:protos.length?protos:["SSH"],
+      ram:parseInt(gv("mvram"))||2,bandwidth:parseInt(gv("mvbw"))||100,
+      cpu:0,ramUsed:0,assignedClients:0,
+      addedDate:new Date().toISOString().split("T")[0]
+    });
+    // Met à jour IP principale si premier VPS
+    if(vps.length===1&&!srvIP){
+      srvIP=ip;save();
+      document.getElementById("sipd").textContent="IP: "+ip;
+      document.getElementById("sip").value=ip;
+    }
+    CM();showToast("VPS ajouté !","success");save();renderVPS();
+  }
+}
+
+// ══ RENDER CLIENTS ════════════════════════════════════════════════════════════
+function setF(f,btn){
+  CF=f;
+  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+  btn.classList.add("active");renderClients();
+}
+
+function renderClients(){
+  const myClients=CU?.role==="reseller"?clients.filter(c=>c.resellerId===CU.rid):clients;
+  const q=(document.getElementById("usearch")||{value:""}).value.toLowerCase();
+  const fl=myClients.filter(c=>{
+    const m=c.username.toLowerCase().includes(q);
+    if(CF==="Tous")return m;
+    if(CF==="Online")return m&&c.online;
+    if(CF==="Offline")return m&&!c.online;
+    if(CF==="Test")return m&&c.testDuration>0;
+    if(CF==="Expire")return m&&isExpired(c);
+    return m&&(c.method||"").includes(CF);
+  });
+  document.getElementById("ucount").textContent=`${fl.length} client(s)`;
+  if(!fl.length){document.getElementById("clist").innerHTML=`<div style="text-align:center;color:var(--muted2);margin-top:28px;font-size:10px;font-family:var(--f3)">// AUCUN CLIENT //</div>`;return;}
+  document.getElementById("clist").innerHTML=fl.map(c=>{
+    const lmb=c.limitVal>0?(c.limitUnit==="GB"?c.limitVal*1024:c.limitVal):0;
+    const up=lmb>0?pct(c.usedMB,lmb):0;const lc=pc(up);
+    const exp=isExpired(c);
+    const isTest=c.testDuration>0;
+    const rem=c.testRemaining||0;
+    const urgent=isTest&&rem>0&&rem<60;
+    return`<div class="card" style="${exp?"border-color:#ff333344;":""}${c.online?"border-color:var(--green3)33;":""}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="width:8px;height:8px;border-radius:50%;background:${exp?"var(--red)":c.online?"var(--green)":"var(--muted2)"};display:inline-block;${c.online&&!exp?"animation:blink 2s infinite":""}"></span>
+          <span style="color:${exp?"var(--red)":"var(--green)"};font-weight:700;font-size:13px;font-family:var(--f3)">${esc(c.username)}</span>
+          ${isTest?`<span class="badge btest">TEST</span>`:""}
+          ${exp?`<span class="badge bex">EXPIRÉ</span>`:""}
+        </div>
+        <div style="display:flex;gap:4px">
+          <button style="color:var(--blue);border:1px solid var(--border);border-radius:3px;padding:4px 6px;background:var(--bg);display:flex" onclick="OM('vc',clients.find(x=>x.id==${c.id}))"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          ${CU?.role==="admin"?`<button style="color:var(--green2);border:1px solid var(--border);border-radius:3px;padding:4px 6px;background:var(--bg);display:flex" onclick="OM('ec',clients.find(x=>x.id==${c.id}))"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>`:""}
+          <button class="bd" style="padding:4px 6px;border-radius:3px" onclick="delC(${c.id})"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 0;margin-bottom:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">STATUT:</span><span class="badge ${exp?"bex":c.status==="Active"?"bg":"bgr"}">${exp?"EXPIRÉ":c.status}</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">MÉTHODE:</span><span class="badge bb">${c.method||"SSH"}</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">${isTest?"RESTANT:":"EXPIRE:"}</span>
+          ${isTest?`<span class="countdown${urgent?" urgent":""}">${fmtDur(rem)}</span>`:`<span style="color:var(--text2);font-size:9px;font-family:var(--f3)">${fd(c.expires)}</span>`}
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">CONN:</span><span style="color:var(--text2);font-size:9px;font-family:var(--f3)">${c.connections}/${c.maxConn}</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">UPTIME:</span><span style="color:var(--green3);font-size:9px;font-family:var(--f3)">${fmt(c.uptime)}</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-right:7px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">↑↓:</span><span style="color:var(--text2);font-size:9px;font-family:var(--f3)">${fmb((c.trafficUp||0)+(c.trafficDown||0))}</span></div>
+      </div>
+      <div style="padding-top:7px;border-top:1px solid var(--border2)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="color:var(--muted);font-size:9px;font-family:var(--f3)">TRAFIC: <span style="color:${lc}">${c.limitVal>0?`${fmb(c.usedMB||0)} / ${c.limitVal}${c.limitUnit}`:"∞ Illimité"}</span></span>
+          ${c.limitVal>0?`<span style="color:${lc};font-size:9px;font-family:var(--f3)">${up}%</span>`:""}
+        </div>
+        ${c.limitVal>0?`<div class="sbw" style="margin-bottom:7px"><div class="sbf" style="width:${up}%;background:${lc}"></div></div>`:""}
+        <button class="cbtn" onclick="copyClient(${c.id})" style="width:100%;justify-content:center;padding:7px">📋 COPIER INFOS CLIENT</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function delC(id){
+  if(!confirm("Supprimer ce client ?"))return;
+  clients=clients.filter(c=>c.id!==id);
+  save();renderClients();updateDash();showToast("Client supprimé","error");
+}
+
+// ══ RENDER RESELLERS ══════════════════════════════════════════════════════════
+function renderResellers(){
+  document.getElementById("rcount").textContent=`${resellers.length} revendeur(s)`;
+  if(!resellers.length){document.getElementById("rslist").innerHTML=`<div style="text-align:center;color:var(--muted2);margin-top:28px;font-size:10px;font-family:var(--f3)">// AUCUN REVENDEUR //</div>`;return;}
+  document.getElementById("rslist").innerHTML=resellers.map(r=>{
+    const myC=clients.filter(c=>c.resellerId===r.id);
+    const p=pct(myC.length,r.maxClients);
+    return`<div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:34px;height:34px;border-radius:3px;background:var(--bg);border:1px solid var(--green3);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff41" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/><line x1="12" y1="12" x2="12" y2="22"/><line x1="8" y1="16" x2="16" y2="16"/></svg></div>
+          <div>
+            <div style="color:var(--green);font-weight:700;font-family:var(--f3);font-size:12px">${esc(r.username)}</div>
+            <div style="color:var(--muted);font-size:9px;font-family:var(--f3)">Pass: ${esc(r.password)} | Expire: ${fd(r.expires)}</div>
+          </div>
+        </div>
+        <span class="badge ${r.status==="Active"?"bg":"bgr"}">${r.status}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:9px">
+        <div style="background:var(--bg);border-radius:3px;padding:6px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--green);font-size:12px;font-weight:700;font-family:var(--f2)">${myC.length}/${r.maxClients}</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">CLIENTS</div></div>
+        <div style="background:var(--bg);border-radius:3px;padding:6px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--amber);font-size:12px;font-weight:700;font-family:var(--f2)">$${(r.balance||0).toFixed(2)}</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">SOLDE</div></div>
+        <div style="background:var(--bg);border-radius:3px;padding:6px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--blue);font-size:10px;font-weight:700;font-family:var(--f3)">${r.limitVal>0?r.limitVal+r.limitUnit:"∞"}</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">LIMITE</div></div>
+      </div>
+      <div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">CAPACITÉ</span><span style="color:${pc(p)};font-size:9px;font-family:var(--f3)">${p}%</span></div><div class="sbw"><div class="sbf" style="width:${p}%;background:${pc(p)}"></div></div></div>
+      <div style="display:flex;gap:5px">
+        <button class="cbtn" style="flex:1;justify-content:center;padding:7px" onclick="copyReseller(${r.id})">📋 COPIER INFOS</button>
+        <button class="bd" style="flex:1;justify-content:center;font-size:10px" onclick="delR(${r.id})"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg> SUP.</button>
+        <button style="flex:1;background:transparent;border:1px solid var(--green3);border-radius:3px;color:var(--green2);font-size:10px;font-family:var(--f3)" onclick="OM('er',resellers.find(x=>x.id==${r.id}))">MODIF.</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function delR(id){
+  if(!confirm("Supprimer ce revendeur ?"))return;
+  resellers=resellers.filter(r=>r.id!==id);
+  save();renderResellers();showToast("Revendeur supprimé","error");
+}
+
+function copyReseller(id){
+  const r=resellers.find(x=>x.id===id);if(!r)return;
+  const lien=window.location.href;
+  let txt=`━━━━━━━━━━━━━━━━━━━━\nGBLNET-CLOUD 243\n— ACCÈS REVENDEUR —\n━━━━━━━━━━━━━━━━━━━━\n`;
+  txt+=`🌐 Lien panel: ${lien}\n`;
+  txt+=`👤 User: ${r.username}\n`;
+  txt+=`🔑 Pass: ${r.password}\n`;
+  txt+=`📊 Max clients: ${r.maxClients}\n`;
+  txt+=`📅 Expire: ${fd(r.expires)}\n`;
+  txt+=`💰 Solde: $${(r.balance||0).toFixed(2)}\n`;
+  txt+=`━━━━━━━━━━━━━━━━━━━━`;
+  copyTxt(txt);
+}
+
+// ══ RENDER VPS ════════════════════════════════════════════════════════════════
+const FLAGS={"France":"🇫🇷","USA":"🇺🇸","Allemagne":"🇩🇪","Pays-Bas":"🇳🇱","Singapour":"🇸🇬","Brésil":"🇧🇷","Canada":"🇨🇦","Royaume-Uni":"🇬🇧","Japon":"🇯🇵","Autre":"🌐"};
+
+function renderVPS(){
+  document.getElementById("vcount").textContent=`${vps.length} VPS`;
+  if(!vps.length){
+    document.getElementById("vlist").innerHTML=`<div style="text-align:center;padding:36px 18px"><div style="color:var(--muted);font-size:11px;font-family:var(--f3);margin-bottom:10px">// AUCUN VPS //</div><button class="bp" style="margin:0 auto;display:flex;gap:5px;padding:8px 16px;font-size:10px" onclick="OM('av')">AJOUTER UN VPS</button></div>`;
+    return;
+  }
+  document.getElementById("vlist").innerHTML=vps.map(v=>`
+    <div class="card" style="border-color:${v.online?"var(--green3)":"var(--border)"}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="font-size:20px">${FLAGS[v.country]||"🌐"}</div>
+          <div>
+            <div style="color:var(--green);font-weight:700;font-family:var(--f3);font-size:12px">${esc(v.name)}</div>
+            <div style="color:var(--muted);font-size:9px;font-family:var(--f3)">${esc(v.ip)}:${v.port} — ${esc(v.sshUser||"root")}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <span style="width:6px;height:6px;border-radius:50%;background:${v.online?"var(--green)":"var(--red)"};display:inline-block;${v.online?"animation:blink 2s infinite":""}"></span>
+          <span style="color:${v.online?"var(--green)":"var(--red)"};font-size:9px;font-family:var(--f3)">${v.online?"ONLINE":"OFFLINE"}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">${(v.protocols||["SSH"]).map(p=>`<span class="badge bb">${p}</span>`).join("")}</div>
+      ${v.online?`
+      <div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">CPU</span><span style="color:var(--green2);font-size:9px;font-family:var(--f3)">${v.cpu||0}%</span></div><div class="sbw"><div class="sbf" style="width:${v.cpu||0}%;background:var(--green2)"></div></div></div>
+      <div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="color:var(--muted);font-size:9px;font-family:var(--f3)">RAM</span><span style="color:var(--amber);font-size:9px;font-family:var(--f3)">${v.ramUsed||0}%</span></div><div class="sbw"><div class="sbf" style="width:${v.ramUsed||0}%;background:var(--amber)"></div></div></div>`:""}
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:9px">
+        <div style="background:var(--bg);border-radius:3px;padding:5px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--green);font-size:11px;font-weight:700;font-family:var(--f2)">${v.ram||2}GB</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">RAM</div></div>
+        <div style="background:var(--bg);border-radius:3px;padding:5px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--green);font-size:11px;font-weight:700;font-family:var(--f2)">${v.bandwidth||100}M</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">BANDE P.</div></div>
+        <div style="background:var(--bg);border-radius:3px;padding:5px;text-align:center;border:1px solid var(--border2)"><div style="color:var(--green);font-size:11px;font-weight:700;font-family:var(--f2)">${clients.filter(c=>c.resellerId===null||c.resellerId===undefined).length}</div><div style="color:var(--muted);font-size:8px;font-family:var(--f3)">CLIENTS</div></div>
+      </div>
+      <div style="display:flex;gap:5px">
+        <button onclick="tvps(${v.id})" style="flex:2;padding:7px;border-radius:3px;border:1px solid ${v.online?"#ff333344":"var(--green3)"};background:${v.online?"#ff333311":"var(--gdim)"};color:${v.online?"var(--red)":"var(--green)"};font-size:10px;font-family:var(--f3)">${v.online?"⏹ DÉCONNECTER":"▶ CONNECTER"}</button>
+        <button onclick="copyTxt('IP: ${esc(v.ip)}\\nPort: ${v.port}\\nUser: ${esc(v.sshUser||"root")}\\nPass: ${esc(v.sshPass||"")}')" class="cbtn" style="flex:1;justify-content:center">📋</button>
+        <button onclick="delV(${v.id})" class="bd" style="flex:1;justify-content:center"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+      </div>
+    </div>`).join("");
+}
+
+function tvps(id){
+  const v=vps.find(x=>x.id===id);if(!v)return;
+  v.online=!v.online;
+  if(v.online){v.cpu=Math.floor(Math.random()*30+10);v.ramUsed=Math.floor(Math.random()*40+20);}
+  else{v.cpu=0;v.ramUsed=0;}
+  save();renderVPS();showToast(v.online?"VPS connecté":"VPS déconnecté",v.online?"success":"error");
+}
+
+function delV(id){
+  if(!confirm("Supprimer ce VPS ?"))return;
+  vps=vps.filter(v=>v.id!==id);save();renderVPS();showToast("VPS supprimé","error");
+}
+
+// ══ DASHBOARD ═════════════════════════════════════════════════════════════════
+function updateDash(){
+  const myC=CU?.role==="reseller"?clients.filter(c=>c.resellerId===CU.rid):clients;
+  const on=myC.filter(c=>c.online&&!isExpired(c));
+  const ac=myC.filter(c=>c.status==="Active"&&!isExpired(c));
+  const tests=myC.filter(c=>c.testDuration>0&&c.testRemaining>0);
+  const tmb=myC.reduce((a,c)=>a+(c.trafficUp||0)+(c.trafficDown||0),0);
+  document.getElementById("dac").textContent=ac.length;
+  document.getElementById("don").textContent=`${on.length} en ligne`;
+  document.getElementById("dlv").textContent=on.length;
+  document.getElementById("drs").textContent=resellers.length;
+  document.getElementById("dts").textContent=tests.length;
+  document.getElementById("rlist").innerHTML=myC.slice(0,5).map(c=>{
+    const exp=isExpired(c);
+    return`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2)">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="width:6px;height:6px;border-radius:50%;background:${exp?"var(--red)":c.online?"var(--green)":"var(--muted2)"};display:inline-block;${c.online&&!exp?"animation:blink 2s infinite":""}"></span>
+        <span style="color:var(--text2);font-size:10px;font-family:var(--f3)">${esc(c.username)}</span>
+        ${c.testDuration>0?`<span class="badge btest" style="font-size:8px">TEST</span>`:""}
+      </div>
+      <div style="display:flex;gap:5px;align-items:center">
+        ${exp?`<span class="badge bex" style="font-size:8px">EXPIRÉ</span>`:`<span class="badge ${c.online?"bg":"bgr"}" style="font-size:8px">${c.online?"ON":"OFF"}</span>`}
+        ${c.testDuration>0&&!exp?`<span style="color:var(--amber);font-size:8px;font-family:var(--f3)">${fmtDur(c.testRemaining)}</span>`:""}
+      </div>
+    </div>`;
+  }).join("")||`<div style="color:var(--muted2);font-size:10px;font-family:var(--f3);text-align:center;padding:7px">Aucun client</div>`;
+  updateNotifs();
+}
+
+// ══ SETTINGS ══════════════════════════════════════════════════════════════════
+function updIP(){
+  srvIP=document.getElementById("sip").value;
+  document.getElementById("sipd").textContent=srvIP?"IP: "+srvIP:"IP: —";
+}
+
+function saveSettings(){
+  srvIP=document.getElementById("sip").value;
+  srvPort=document.getElementById("sport").value||"22";
+  srvUDP=document.getElementById("sudp").value||"36712";
+  document.getElementById("sipd").textContent=srvIP?"IP: "+srvIP:"IP: —";
+  document.getElementById("dssh").textContent=":"+srvPort;
+  save();showToast("Paramètres sauvegardés","success");
+}
+
+// ══ RESELLER VIEW ═════════════════════════════════════════════════════════════
+function initResellerApp(r){
+  // Dashboard revendeur
+  renderClients();
+  updateDash();
+  ST("dashboard");
+  startLoop();
+}
+
+// ══ MAIN INIT ═════════════════════════════════════════════════════════════════
+function initApp(){
+  renderClients();renderResellers();renderVPS();updateDash();
+  startLoop();
+}
+
+let loopStarted=false;
+function startLoop(){
+  if(loopStarted)return;
+  loopStarted=true;
+  setInterval(()=>{
+    // Horloge
+    document.getElementById("htime").textContent=new Date().toLocaleTimeString("fr-FR");
+    // Compte à rebours des tests
+    let changed=false;
+    clients.forEach(c=>{
+      if(c.testDuration>0&&c.testRemaining>0){
+        c.testRemaining--;
+        changed=true;
+        if(c.testRemaining===0){
+          c.status="Inactive";c.online=false;
+          showToast(`⏰ ${c.username}: test expiré !`,"warning");
+        }
+        if(c.testRemaining===60){
+          showToast(`⚠️ ${c.username}: 1 minute restante !`,"warning");
+        }
+      }
+    });
+    // Simulation CPU/RAM
+    let cpu=parseFloat(document.getElementById("cpuv").textContent)||20;
+    let ram=parseFloat(document.getElementById("ramv").textContent)||40;
+    cpu=Math.min(95,Math.max(5,cpu+(Math.random()-.5)*5));
+    ram=Math.min(90,Math.max(20,ram+(Math.random()-.5)*3));
+    document.getElementById("cpuv").textContent=Math.round(cpu)+"%";
+    document.getElementById("cpub").style.width=Math.round(cpu)+"%";
+    document.getElementById("ramv").textContent=Math.round(ram)+"%";
+    document.getElementById("ramb").style.width=Math.round(ram)+"%";
+    // VPS simulation
+    vps.forEach(v=>{
+      if(v.online){
+        v.cpu=Math.round(Math.min(95,Math.max(5,(v.cpu||20)+(Math.random()-.5)*8)));
+        v.ramUsed=Math.round(Math.min(90,Math.max(10,(v.ramUsed||40)+(Math.random()-.5)*4)));
+      }
+    });
+    if(changed)save();
+    // Refresh tab actif
+    const at=document.querySelector(".tab.active");
+    if(at){
+      if(at.id==="tab-dashboard")updateDash();
+      if(at.id==="tab-users")renderClients();
+      if(at.id==="tab-vps")renderVPS();
+    }
+  },1000);
+}
+</script>
+</body>
+</html>
